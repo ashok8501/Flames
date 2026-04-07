@@ -1,38 +1,36 @@
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Form
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
-from app.models import FlamesInput
 from app.flames_logic import calculate_flames
 from app.database import collection
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
 
 
-# UI Page
+# Home page
 @router.get("/", response_class=HTMLResponse)
-def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+def home():
+    return """
+    <html>
+        <head>
+            <title>FLAMES Game</title>
+        </head>
+        <body>
+            <h1>🔥 FLAMES Game</h1>
+
+            <form action="/submit" method="post">
+                <input type="text" name="name1" placeholder="Your Name" required><br><br>
+                <input type="text" name="name2" placeholder="Partner Name" required><br><br>
+                <button type="submit">Check</button>
+            </form>
+        </body>
+    </html>
+    """
 
 
-# API (JSON)
-@router.post("/flames")
-def get_flames(data: FlamesInput):
-    result = calculate_flames(data.name1, data.name2)
-
-    collection.insert_one({
-        "name1": data.name1,
-        "name2": data.name2,
-        "result": result
-    })
-
-    return {"result": result}
-
-
-# Form Submission
+# Handle form
 @router.post("/submit", response_class=HTMLResponse)
-def submit(request: Request, name1: str = Form(...), name2: str = Form(...)):
+def submit(name1: str = Form(...), name2: str = Form(...)):
     result = calculate_flames(name1, name2)
 
     collection.insert_one({
@@ -41,7 +39,11 @@ def submit(request: Request, name1: str = Form(...), name2: str = Form(...)):
         "result": result
     })
 
-    return templates.TemplateResponse(
-        "index.html",
-        {"request": request, "result": result}
-    )
+    return f"""
+    <html>
+        <body>
+            <h2>Result: {result}</h2>
+            <a href="/">Try Again</a>
+        </body>
+    </html>
+    """
