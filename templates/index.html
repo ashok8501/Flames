@@ -4,64 +4,72 @@
     <title>FLAMES Game</title>
 
     <style>
-        body {
-            font-family: Arial;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        }
+    body {
+        font-family: Arial;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            width: 320px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
+        /* 🔥 New beautiful gradient */
+        background: linear-gradient(135deg, #1e3c72, #2a5298, #ff758c);
 
-        h1 {
-            margin-bottom: 10px;
-            color: #ff4b5c;
-        }
+        /* Smooth animation */
+        background-size: 300% 300%;
+        animation: gradientMove 8s ease infinite;
+    }
 
-        p {
-            margin-bottom: 15px;
-            color: #555;
-        }
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+    .container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);   /* glass effect */
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        width: 320px;
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: #ff4b5c;
-            border: none;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
 
-        button:hover {
-            background: #e63b4c;
-        }
+    h1 {
+        color: white;
+    }
 
-        .loading {
-            display: none;
-            margin-top: 15px;
-            color: #555;
-        }
-    </style>
+    p {
+        color: #f1f1f1;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        background: linear-gradient(45deg, #ff4b5c, #ff758c);
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+</style>
 
     <script>
         function showLoading() {
