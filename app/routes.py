@@ -7,43 +7,116 @@ from app.database import collection
 router = APIRouter()
 
 
-# Home page
+# Home Page (loads HTML file)
 @router.get("/", response_class=HTMLResponse)
 def home():
-    return """
-    <html>
-        <head>
-            <title>FLAMES Game</title>
-        </head>
-        <body>
-            <h1>🔥 FLAMES Game</h1>
-
-            <form action="/submit" method="post">
-                <input type="text" name="name1" placeholder="Your Name" required><br><br>
-                <input type="text" name="name2" placeholder="Partner Name" required><br><br>
-                <button type="submit">Check</button>
-            </form>
-        </body>
-    </html>
-    """
+    with open("templates/index.html", "r", encoding="utf-8") as f:
+        return f.read()
 
 
-# Handle form
+# Result Page
 @router.post("/submit", response_class=HTMLResponse)
 def submit(name1: str = Form(...), name2: str = Form(...)):
     result = calculate_flames(name1, name2)
 
+    # Save data
     collection.insert_one({
         "name1": name1,
         "name2": name2,
         "result": result
     })
 
-    return f"""
-    <html>
-        <body>
-            <h2>Result: {result}</h2>
-            <a href="/">Try Again</a>
-        </body>
-    </html>
-    """
+    # Emojis
+    emojis = {
+        "Friends": "😄",
+        "Love": "❤️",
+        "Affection": "🥰",
+        "Marriage": "💍",
+        "Enemies": "💀",
+        "Siblings": "👫"
+    }
+
+    # Telugu fun lines
+    telugu_lines = {
+        "Friends": "Meeru best friends ra 😄",
+        "Love": "Idi love kadhu ra… pure love ❤️",
+        "Affection": "Chala caring undi mee madhya 🥰",
+        "Marriage": "Pelli fix ayyindi 💍😂",
+        "Enemies": "Idhi danger zone 💀",
+        "Siblings": "Brother sister vibes 😂"
+    }
+
+    emoji = emojis.get(result, "✨")
+    line = telugu_lines.get(result, "Super combo 🔥")
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+
+    <style>
+        body {{
+            font-family: Arial;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            text-align: center;
+        }}
+
+        .box {{
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.8s ease-in-out;
+        }}
+
+        @keyframes fadeIn {{
+            from {{ opacity: 0; transform: scale(0.8); }}
+            to {{ opacity: 1; transform: scale(1); }}
+        }}
+
+        .emoji {{
+            font-size: 45px;
+        }}
+
+        h2 {{
+            margin: 10px 0;
+        }}
+
+        p {{
+            margin: 8px 0;
+        }}
+
+        a {{
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            background: #ff4b5c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }}
+
+        a:hover {{
+            background: #e63b4c;
+        }}
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <div class="emoji">{emoji}</div>
+        <h2>{result}</h2>
+        <p><b>{line}</b></p>
+        <p>{name1} ❤️ {name2}</p>
+        <a href="/">Malli Try Chey 😄</a>
+    </div>
+
+</body>
+</html>
+"""

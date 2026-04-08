@@ -5,41 +5,49 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            font-family: Arial;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
             text-align: center;
-            padding-top: 80px;
-            color: white;
+            width: 320px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
         h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            color: #ff4b5c;
         }
 
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            display: inline-block;
-            color: black;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        p {
+            margin-bottom: 15px;
+            color: #555;
         }
 
         input {
-            padding: 10px;
-            width: 200px;
-            margin: 10px;
-            border-radius: 6px;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
             border: 1px solid #ccc;
         }
 
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
             background: #ff4b5c;
             border: none;
             color: white;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
         }
@@ -48,24 +56,36 @@
             background: #e63b4c;
         }
 
-        h2 {
-            margin-top: 20px;
-            color: yellow;
+        .loading {
+            display: none;
+            margin-top: 15px;
+            color: #555;
         }
     </style>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+    </script>
 </head>
 
 <body>
-    <h1>🔥 FLAMES Game</h1>
 
-    <form action="/submit" method="post">
-        <input type="text" name="name1" placeholder="Your Name" required><br>
-        <input type="text" name="name2" placeholder="Partner Name" required><br>
-        <button type="submit">Check Result</button>
-    </form>
+    <div class="container">
+        <h1>🔥 FLAMES Game</h1>
+        <p>Meeku iddari madhya emi undho chuddam 😄</p>
 
-    {% if result %}
-        <h2>Result: {{ result }}</h2>
-    {% endif %}
+        <form action="/submit" method="post" onsubmit="showLoading()">
+            <input type="text" name="name1" placeholder="Mee Peru" required>
+            <input type="text" name="name2" placeholder="Valla Peru" required>
+            <button type="submit">Result Chuddam 🔥</button>
+        </form>
+
+        <div id="loading" class="loading">
+            Calculating your destiny... 💫
+        </div>
+    </div>
+
 </body>
 </html>
